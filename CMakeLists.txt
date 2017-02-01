@@ -28,6 +28,10 @@ set(LIBJPEG_TURBO_VERSION_NUMBER ${VERSION_MAJOR}${VERSION_MINOR}${VERSION_REVIS
 string(TIMESTAMP DEFAULT_BUILD "%Y%m%d")
 set(BUILD ${DEFAULT_BUILD} CACHE STRING "Build string (default: ${DEFAULT_BUILD})")
 
+if(CMAKE_TOOLCHAIN_FILE)
+  message(STATUS "Using toolchain file ${CMAKE_TOOLCHAIN_FILE}")
+endif()
+
 # NOTE: On Windows, this does nothing except when using MinGW or Cygwin.
 # CMAKE_BUILD_TYPE has no meaning in Visual Studio, and it always defaults to
 # Debug when using NMake.
@@ -37,6 +41,17 @@ endif()
 message(STATUS "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
 
 message(STATUS "VERSION = ${VERSION}, BUILD = ${BUILD}")
+
+if(NOT DEFINED CMAKE_SIZEOF_VOID_P)
+  if(DEFINED CMAKE_OSX_ARCHITECTURES)
+    list(GET CMAKE_OSX_ARCHITECTURES 0 CMAKE_SYSTEM_PROCESSOR)
+    if(CMAKE_SYSTEM_PROCESSOR MATCHES ".*64")
+      set(CMAKE_SIZEOF_VOID_P 8)
+    else()
+      set(CMAKE_SIZEOF_VOID_P 4)
+    endif()
+  endif()
+endif()
 
 # Detect CPU type and whether we're building 64-bit or 32-bit code
 math(EXPR BITS "${CMAKE_SIZEOF_VOID_P} * 8")
