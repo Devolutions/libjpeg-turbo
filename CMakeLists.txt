@@ -53,6 +53,17 @@ if(NOT DEFINED CMAKE_SIZEOF_VOID_P)
   endif()
 endif()
 
+if(IOS)
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -arch ${CMAKE_SYSTEM_PROCESSOR}")
+  if(CMAKE_SYSTEM_PROCESSOR MATCHES "armv7")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mfloat-abi=softfp")
+  elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "armv7s")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mfloat-abi=softfp")
+  elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "arm64")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -funwind-tables")
+  endif()
+endif()
+
 # Detect CPU type and whether we're building 64-bit or 32-bit code
 math(EXPR BITS "${CMAKE_SIZEOF_VOID_P} * 8")
 string(TOLOWER ${CMAKE_SYSTEM_PROCESSOR} CMAKE_SYSTEM_PROCESSOR_LC)
