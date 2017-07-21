@@ -113,7 +113,7 @@ typedef char JOCTET;
 
 #endif /* HAVE_UNSIGNED_CHAR */
 
-
+#ifndef HAVE_JPEG_INT_TYPES
 /* These typedefs are used for various table entries and so forth.
  * They must be at least as wide as specified; but making them too big
  * won't cost a huge amount of memory, so we don't provide special
@@ -181,7 +181,7 @@ typedef long INT32;
 #endif
 #endif
 #endif
-
+#endif
 /* Datatype used for image dimensions.  The JPEG standard only supports
  * images up to 64K*64K due to 16-bit fields in SOF markers.  Therefore
  * "unsigned int" is sufficient on all machines.  However, if you need to
